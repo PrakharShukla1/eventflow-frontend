@@ -21,20 +21,21 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 bg-slate-950/60 backdrop-blur-3xl border-b border-white/10 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] selection:bg-cyan-500/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        {/* Changed layout wrapper to stack items on mobile and maintain the exact original layout on desktop (md:flex-row, md:h-20) */}
+        <div className="flex flex-col md:flex-row justify-between items-center min-h-[5rem] md:h-20 py-4 md:py-0 gap-4 md:gap-0">
           
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
+          <Link to="/" className="flex items-center gap-2 group">
             <span className="text-3xl font-display font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-purple-500 bg-[length:200%_auto] group-hover:animate-[pulse_2s_ease-in-out_infinite] drop-shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all duration-300">
               EventFlow
             </span>
           </Link>
 
-          {/* Navigation Links - Removed 'hidden md:flex' and added 'flex overflow-x-auto' for mobile scrollability */}
-          <div className="flex items-stretch h-full gap-4 md:gap-10 overflow-x-auto pl-4">
+          {/* Navigation Links - Replaced 'hidden md:flex' with flex-wrap logic for mobile stacking */}
+          <div className="flex items-center md:items-stretch h-auto md:h-full gap-4 md:gap-10 flex-wrap justify-center">
             
             {/* 🌟 UPGRADED "LIVING" BROWSE EVENTS LINK 🌟 */}
-            <Link to="/events" className="relative group flex items-center h-full px-2 flex-shrink-0">
+            <Link to="/events" className="relative group flex items-center h-auto md:h-full px-2 py-1 md:py-0">
               <span className={`text-base sm:text-lg font-black uppercase tracking-widest transition-all duration-300 z-10 transform group-hover:scale-110 group-hover:-translate-y-0.5 ${
                 isActive('/events') 
                   ? 'text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-fuchsia-300 drop-shadow-[0_0_15px_rgba(34,211,238,0.9)]' 
@@ -55,7 +56,7 @@ const Navbar = () => {
             </Link>
 
             {user && (
-              <Link to="/my-bookings" className="relative group flex items-center h-full flex-shrink-0 px-2">
+              <Link to="/my-bookings" className="relative group flex items-center h-auto md:h-full px-2 py-1 md:py-0">
                 <span className={`text-sm font-bold tracking-wide transition-all duration-300 z-10 ${
                   isActive('/my-bookings') 
                     ? 'text-cyan-300 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]' 
@@ -75,7 +76,7 @@ const Navbar = () => {
             )}
 
             {isAdmin && (
-              <Link to="/admin" className="relative group flex items-center h-full flex-shrink-0 px-2">
+              <Link to="/admin" className="relative group flex items-center h-auto md:h-full px-2 py-1 md:py-0">
                 <span className={`text-sm font-bold tracking-wide transition-all duration-300 z-10 ${
                   location.pathname.startsWith('/admin') 
                     ? 'text-fuchsia-300 drop-shadow-[0_0_10px_rgba(217,70,239,0.8)]' 
@@ -96,30 +97,30 @@ const Navbar = () => {
           </div>
 
           {/* Auth Buttons */}
-          <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+          <div className="flex items-center gap-4 flex-wrap justify-center">
             {user ? (
-              <div className="flex items-center gap-2 sm:gap-5">
-                {/* Removed 'hidden sm:flex' to make it visible on mobile */}
-                <span className="flex items-center text-xs sm:text-sm text-slate-400">
+              <div className="flex items-center gap-3 sm:gap-5">
+                {/* Removed 'hidden sm:flex' to ensure visibility on mobile */}
+                <span className="flex items-center text-sm text-slate-400">
                   Hi, <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300 ml-1.5 tracking-wide">{user.name}</span>
                   {isAdmin && (
-                    <span className="ml-2 sm:ml-3 px-2 sm:px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-300 text-[8px] sm:text-[10px] font-bold uppercase tracking-widest shadow-[0_0_10px_rgba(217,70,239,0.2)]">
+                    <span className="ml-2 sm:ml-3 px-2 sm:px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-300 text-[10px] font-bold uppercase tracking-widest shadow-[0_0_10px_rgba(217,70,239,0.2)]">
                       Admin
                     </span>
                   )}
                 </span>
                 <button 
                   onClick={handleLogout} 
-                  className="py-2 px-3 sm:py-2.5 sm:px-5 text-xs sm:text-sm font-bold rounded-xl bg-black/40 text-slate-300 hover:bg-slate-900 hover:text-cyan-300 transition-all duration-300 border border-white/10 hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(34,211,238,0.2)]"
+                  className="py-2 px-4 sm:py-2.5 sm:px-5 text-sm font-bold rounded-xl bg-black/40 text-slate-300 hover:bg-slate-900 hover:text-cyan-300 transition-all duration-300 border border-white/10 hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(34,211,238,0.2)]"
                 >
                   Logout
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2 sm:gap-4">
+              <div className="flex items-center gap-3 sm:gap-4">
                 <Link 
                   to="/login" 
-                  className="py-2 px-3 sm:py-2.5 sm:px-5 text-xs sm:text-sm font-bold rounded-xl bg-black/40 text-slate-300 hover:bg-slate-900 hover:text-cyan-300 transition-all duration-300 border border-white/10 hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(34,211,238,0.2)]"
+                  className="py-2 px-4 sm:py-2.5 sm:px-5 text-sm font-bold rounded-xl bg-black/40 text-slate-300 hover:bg-slate-900 hover:text-cyan-300 transition-all duration-300 border border-white/10 hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(34,211,238,0.2)]"
                 >
                   Login
                 </Link>
@@ -129,7 +130,7 @@ const Navbar = () => {
                   <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-fuchsia-500 rounded-xl blur opacity-40 group-hover:opacity-100 transition duration-500 group-hover:duration-200 animate-tilt"></div>
                   <Link 
                     to="/register" 
-                    className="relative block py-2 px-3 sm:py-2.5 sm:px-5 text-xs sm:text-sm font-bold rounded-xl bg-slate-950 text-white border border-white/10 group-hover:bg-slate-900 group-hover:text-cyan-300 transition-all duration-300"
+                    className="relative block py-2 px-4 sm:py-2.5 sm:px-5 text-sm font-bold rounded-xl bg-slate-950 text-white border border-white/10 group-hover:bg-slate-900 group-hover:text-cyan-300 transition-all duration-300"
                   >
                     Sign Up
                   </Link>
